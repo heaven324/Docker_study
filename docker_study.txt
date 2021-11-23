@@ -1,69 +1,76 @@
 # cmd
 
-docker container run ubuntu:latest /bin/echo 'Hello World'  	# 컨테이너 실행 및 내용
+docker container run ubuntu:latest /bin/echo 'Hello World'      # 컨테이너 실행 및 내용
 
-docker version 													# docker 버전 확인
+docker version                                                  # docker 버전 확인
 
-docker system info												# 시스템 정보 확인
+docker system info                                              # 시스템 정보 확인
 
-docker system df 												# docker 디스크 이용 상황
+docker system df                                                # docker 디스크 이용 상황
 
-docker pull nginx												# docker 이미지 다운로드 
+docker pull nginx                                               # docker 이미지 다운로드 
 
-docker image ls													# docker 이미지 확인
+docker image ls                                                 # docker 이미지 확인
 
-docker container rum --name webserver -d -p 80:80 nginx			# 컨테이너 실행
+docker container rum --name webserver -d -p 80:80 nginx         # 컨테이너 실행
 
-docker container ps												# 컨테이너 상태 확인
+docker container ps                                             # 컨테이너 상태 확인
 
-docker container stats webserver								# 컨테이너 가동 확인 / 리소스 모니터?
+docker container stats webserver                                # 컨테이너 가동 확인 / 리소스 모니터?
 
-docker stop webserver											# 컨테이너 정지
+docker stop webserver                                           # 컨테이너 정지
 
-docker start webserver											# 컨테이너 시작
+docker start webserver                                          # 컨테이너 시작
 						
-docker image ls													# docker 이미지 목록 표시
+docker image ls                                                 # docker 이미지 목록 표시
 
-docker image inspect ubuntu:latest								# 이미지 상세정보 표시
+docker image inspect ubuntu:latest                              # 이미지 상세정보 표시
 
-docker image tag ubuntu seongho/ubuntu:1.0						# 이미지 태그 설정(주로 버전을 쓴다)/실체는 같다
+docker image tag ubuntu seongho/ubuntu:1.0                      # 이미지 태그 설정(주로 버전을 쓴다)/실체는 같다
 
-docker search ubuntu											# docker hub에 있는 이미지 검색
+docker search ubuntu                                            # docker hub에 있는 이미지 검색
 
-docker image rm nginx											# docker 이미지 삭제
-
+docker image rm nginx                                           # docker 이미지 삭제
 
 
 
 
 # 4장 Docker 명령
 
-docker image pull [옵션] 이미지명:[태그명]						# 이미지 다운로드
+docker image pull [옵션] 이미지명:[태그명]                      # 이미지 다운로드
 docker image pull -a centos
 
-docker image ls [옵션] [리포지토리 명]							# 이미지 목록 표시
+docker image ls [옵션] [리포지토리 명]                          # 이미지 목록 표시
 docker image ls
 docker image ls --digests
 
-docker image inspect 이미지명:[태그명]							# 이미지 상세정보 표시
+docker image inspect 이미지명:[태그명]                          # 이미지 상세정보 표시
 
-docker image tag [기존 태그] [바꿀 태그]							# 이미지 태그 변경
+docker image tag [기존 태그] [바꿀 태그]                        # 이미지 태그 변경
 
-docker search [옵션] <검색키워드>									# 이미지 검색
+docker search [옵션] <검색키워드>                               # 이미지 검색
 docker search ubuntu
 
-docker image rm [옵션] 이미지명 [이미지명]						# 이미지 삭제
+docker image rm [옵션] 이미지명 [이미지명]                      # 이미지 삭제
 docker image rm 82f 9f1 368 f1a 5bf
 
-docker image prune [옵션]										# 사용하지 않는 이미지 삭제
-docker image prune -a											# 사용하지 않는 이미지 모두 삭제
+docker image prune [옵션]                                       # 사용하지 않는 이미지 삭제
+docker image prune -a                                           # 사용하지 않는 이미지 모두 삭제
 
-docker container run [옵션] 이미지명:[태그명] [인수]				# 컨테이너 생성 및 시작
+docker container run [옵션] 이미지명:[태그명] [인수]            # 컨테이너 생성 및 시작
 docker container run -it --name "test1" centos /bin/cal
 docker container run -it --name "test2" centos /bin/bash
-exit															# 컨테이너 실행 종료
+docker container run -d centos /bin/ping localhost              # 컨테이너 백그라운드 실행
+docker container logs -t 098dd55                                # 컨테이너 로그 확인
+exit                                                            # 컨테이너 실행 종료
 
+docker container run [네트워크 옵션] 이미지명:[태그명] [인수]   # 컨테이너의 네트워크 설정
+docker container run -d -p 7080:80 nginx                        # 호스트의 8080과 컨테이너의 80과의 매핑
+docker container run -d --dns 192.168.0.1 nginx                 # 컨테이너의 DNS 서버 지정
 
+docker container run [자원 옵션] 이미지명:[태그명] [인수]       # 자원을 지정하여 컨테이너 생성
+docker container run --cpu-shares=512 --memory=1g centos        # cpu와 메모리 사용량의 지정
+docker conatiner run -v /Users/asa/webap:/usr/share nginx       # 디렉토리 공유
 
 
 
@@ -83,20 +90,21 @@ meadml/cuda11.0-cudnn8-devel-ubuntu18.04-python3.8   latest
 docker run -it --name ftsl --gpus '"device=6,7"' -v /raid/session/lipo/netcoretech:/workspace myelintek/yolov4:1.1 /bin/bash
 : 컨테이너 생성하기
 
-ctrl + p,q  													# 실행상태로 나오기
+ctrl + p,q                                                      # 실행상태로 나오기
 
-docker attach ftsl  											# 실행중인 컨테이너 안으로 다시 들어가기
-
-
-docker ps -a 													# 실행중인 컨테이너 리스트 보기
+docker attach ftsl                                              # 실행중인 컨테이너 안으로 다시 들어가기
 
 
-docker stop ftsl 												# 내 실행중인 도커 멈추기
+docker ps -a                                                    # 실행중인 컨테이너 리스트 보기
 
 
-docker rm ftsl 													# 멈춰져 있는 내 컨테이너 지우기
+docker stop ftsl                                                # 내 실행중인 도커 멈추기
+
+
+docker rm ftsl                                                  # 멈춰져 있는 내 컨테이너 지우기
 
 
 
 python -m torch.distributed.launch --nproc_per_node 2 train.py --device 0,1 --batch 180
 : gpu 분산 환경에서 yolo train
+
