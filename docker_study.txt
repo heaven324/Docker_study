@@ -57,6 +57,7 @@ docker image rm 82f 9f1 368 f1a 5bf
 docker image prune [옵션]                                       # 사용하지 않는 이미지 삭제
 docker image prune -a                                           # 사용하지 않는 이미지 모두 삭제
 
+
 docker container run [옵션] 이미지명:[태그명] [인수]            # 컨테이너 생성 및 시작
 docker container run -it --name "test1" centos /bin/cal
 docker container run -it --name "test2" centos /bin/bash
@@ -72,11 +73,52 @@ docker container run [자원 옵션] 이미지명:[태그명] [인수]       # �
 docker container run --cpu-shares=512 --memory=1g centos        # cpu와 메모리 사용량의 지정
 docker conatiner run -v /Users/asa/webap:/usr/share nginx       # 디렉토리 공유
 
+docker container run [환경설정 옵션] 이미지명:[태그명] [인수]   # 컨테이너 시작 환경 지정
+docker container run -it -e foo=bar centos /bin/bash            # 환경변수 설정
+docker container run -it --env-file=env_list centos /bin/bash   # 환경변수 일괄 설정
+docker container run -it -w=/tensorflow centos /bin/bash        # 작업 디렉토리 설정
+
+docker container ls [옵션]                                      # 가동 컨테이너 목록 표시
+
+docker container status [컨테이너 식별자]                       # 컨테이너 가동 확인
+docker container status webserver
+docker container top webserver                                  # 프로세스 확인
+ctrl + c                                                        # 명령 종료
+
+docker container start [옵션] <컨테이너 식별자> [컨테이너 식별자] # 정지 컨테이너 시작
+
+docker container stop [옵션] <컨테이너 식별자> [컨테이너 식별자] # 컨테이너 정지
+
+docker container restart [옵션] <컨테이너 식별자> [컨테이너 식별자] # 컨테이너 재시작
+
+docker container rm [옵션] <컨테이너 식별자> [컨테이너 식별자]  # 컨테이너 삭제
+docker container prune                                          # 정지중인 모든 컨테이너 삭제
+
+docker container pause <컨테이너 식별자>                        # 작동중인 컨테이너의 프로세스 중단
+docker container unpause webserver                              # 재개
 
 
+docker network ls [옵션]                                        # 네트워크 목록 표시(기본 컨테이너 시작:bridge)
+
+docker network create [옵션] 네트워크                           # 네트워크 작성
+docker network create --driver=bridge web-network               # 브리지 네트워크 작성
+docker network ls --filter driver=bridge                        # 작성한 네트워크 확인
+
+docker network connect [옵션] 네트워크 컨테이너                 # 네트워크 연결
+docker network connect web-network sample                       # 지정 네트워크 연결
+docker container run -itd --name=webap --net=web-network nginx  # 컨테이너 시작시 네트워크 지정
+docker network disconnect web-network sample                    # 네트워크 연결 해제
+
+docker network inspect web-network                              # 네트워크 상세 정보 확인
+
+docker network rm [옵션] 네트워크                               # 네트워크 삭제
+docker network rm web-network
 
 
+docker container attach sample                                  # 가동 컨테이너 연결
+ctrl + c        ctrl + p, q                                     # 컨테이너 종료, 컨테이너 분리
 
+docker container exec [옵션] <컨테이너 식별자> <실행 명령> [인수] # 가동 컨테이너에서 프로세스 실행
 
 
 
