@@ -21,7 +21,7 @@ docker container stats webserver                                # 컨테이너 �
 docker stop webserver                                           # 컨테이너 정지
 
 docker start webserver                                          # 컨테이너 시작
-						
+                        
 docker image ls                                                 # docker 이미지 목록 표시
 
 docker image inspect ubuntu:latest                              # 이미지 상세정보 표시
@@ -119,6 +119,30 @@ docker container attach sample                                  # 가동 컨테�
 ctrl + c        ctrl + p, q                                     # 컨테이너 종료, 컨테이너 분리
 
 docker container exec [옵션] <컨테이너 식별자> <실행 명령> [인수] # 가동 컨테이너에서 프로세스 실행
+docker container exec sample /bin/bash
+docker container exec -it sample /bin/echo "Hello"
+
+docker container top sample                                     # 가동 컨테이너의 프로세스 확인
+
+docker container port sample                                    # 가동 컨테이너의 포트 전송 확인
+
+docker container rename sample test                             # 컨테이너의 이름 변경
+
+docker container cp <컨테이너 식별자>:<컨테이너 안의 파일 경로> <호스트의 디렉토리 경로>
+docker container cp <호스트의 파일> <컨테이너 식별자>:<컨테이너 안의 파일 경로>
+                                                                # 컨테이너 안의 파일 복사
+docker container cp test:/etc/bash.bashrc ./test.bashrc
+docker container cp ./test.bashrc test:/etc/test.bashrc
+
+docker container diff <컨테이너 식별자>                         # 컨테이너 조작의 차분 확인
+docker container diff test
+
+
+docker container commit [옵션] <컨테이너 식별자> [이미지명[:태그명]] # 컨테이너로부터 이미지 작성
+
+
+
+
 
 
 
