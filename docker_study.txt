@@ -160,6 +160,14 @@ docker system prune [옵션]                                      # 불필요한
 
 
 
+# Dockfile을 사용한 코드에 의한 서버 구축
+
+
+
+
+
+
+
 
 
 
