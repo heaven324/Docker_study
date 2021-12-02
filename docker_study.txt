@@ -139,8 +139,23 @@ docker container diff test
 
 
 docker container commit [옵션] <컨테이너 식별자> [이미지명[:태그명]] # 컨테이너로부터 이미지 작성
+docker container commit -a "heaven" test heaven/testtest:1.0
+docker image inspect heaven/testtest:1.0
 
+docker container export <컨테이너 식별자>                       # 컨테이너를 tar파일로 출력
+docker container export test > test.tar
+tar tf test.tar | more                                          # tar파일로 출력된 상세 내용 확인
 
+docker image import <파일 또는 URL> | - [이미지명[:태그명]]     # tar 파일로 이미지 작성(tar, tar.gz, tgz, bzip, tar.xz, txz)
+cat test.tar | docker image import - heaven2/test:2.0           # 실제론 구문이 좀 다름
+
+docker image save [이미지명] > <저장 파일명>                    # 이미지 저장
+docker image save heaven/testtest:1.0 > test.tar                # 실제론 구문이 좀 다름
+
+docker image load [옵션]                                        # 이미지 읽어 들이기
+docker image load -i test.tar
+
+docker system prune [옵션]                                      # 불필요한 이미지/컨테이너 일괄 삭제
 
 
 
