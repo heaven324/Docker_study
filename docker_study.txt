@@ -162,6 +162,7 @@ docker system prune [옵션]                                      # 불필요한
 
 # Dockfile을 사용한 코드에 의한 서버 구축
 
+docker build -t [생성할 이미지명]:[태그명] [Dockerfile의 위치]  # docker build 의 명령어 서식
 
 
 
