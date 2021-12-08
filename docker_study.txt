@@ -162,10 +162,35 @@ docker system prune [옵션]                                      # 불필요한
 
 # Dockfile을 사용한 코드에 의한 서버 구축
 
+FROM [이미지명]:{[태그명]or[@다이제스트]}                       # Dockerfile 베이스 이미지 서식
+FROM heaven/testtest:1.0
+
+
 docker build -t [생성할 이미지명]:[태그명] [Dockerfile의 위치]  # docker build 의 명령어 서식
+docker build -t sample:1.0 ../sample
+docker build -t sample -f Dockerfile.txt ./                     # 파일명 지정 빌드
 
+이미지 빌드 예시(Dockerfile)
+FROM ubuntu:latest
+RUN apt-get update && apt-get install -y -q nginx
+COPY index.html /usr/share/nginx/html
+CMD ["nginx", "-g", "daemon off;"]
 
+docker history webap                                            # 빌드 명령 확인
 
+RUN [실행하고싶은 명령]                                         # 명령실행(Dockerfile)
+RUN apt-get install -y nginx                                    # Shell 형식의 명령
+RUN ["/bin/bash", "-c", "apt-get install -y nginx"]             # Exec 형식의 명령
+
+CMD [실행하고 싶은 명령]                                        # 데몬 실행 명령
+CMD ["nginx", "-g", "daemon off;"]                              # Exec로 데몬실행
+CMD nginx -g 'daemon off;'                                      # Shell로 데몬실행
+
+ENTRYPOINT [실행하고 싶은 명령]                                 # docker run 시 데몬 실행 명령
+ENTRYPOINT ["nginx", "-g", "daemon off;"]                       # Exec로 데몬실행
+ENTRYPOINT nginx -g 'daemon off;'                               # Shell로 데몬실행
+
+ONBUILD [실행하고 싶은 명령]                                    # 빌드 완료 후에 실행되는 명령
 
 
 
