@@ -160,7 +160,7 @@ docker system prune [옵션]                                      # 불필요한
 
 
 
-# Dockfile을 사용한 코드에 의한 서버 구축
+# Dockfile을 사용한 코드에 의한 서버 구축(Dockerfile 저장위치 주의)
 
 FROM [이미지명]:{[태그명]or[@다이제스트]}                       # Dockerfile 베이스 이미지 서식
 FROM heaven/testtest:1.0
@@ -191,6 +191,51 @@ ENTRYPOINT ["nginx", "-g", "daemon off;"]                       # Exec로 데몬
 ENTRYPOINT nginx -g 'daemon off;'                               # Shell로 데몬실행
 
 ONBUILD [실행하고 싶은 명령]                                    # 빌드 완료 후에 실행되는 명령
+
+STOPSIGNAL [시그널]                                             # 시스템 콜 시그널
+
+HEALTHCHECK [옵션] CMD 실행할 명령                              # 컨테이너의 헬스 체크 명령
+
+
+ENV [key] [value]                                               # 환경변수 설정
+ENV [key]=[value]
+
+WORKDIR [작업 디렉토리 경로]                                    # 작업 디렉토리 지정
+
+USER [사용자명/UID]                                             # 사용자 지정
+RUN ["adduser", "asa"]
+USER asa                                                        # RUN으로 미리 사용자 작성 필요
+RUN ["whoami"]
+
+LABEL <키 명>=<값>                                              # 라벨 지정(상세정보에 표시됨)
+LABEL maintainer "heaven"
+LABEL title="webap"
+LABEL version="1.0"
+LABEL discription="This image is test"
+
+EXPOSE <포트번호>                                               # 컨테이너의 공개포트 번호 지정
+
+ARG <이름>[=기본값]                                             # Dockerfile 내 변수 설정
+
+SHELL ["쉘의 경로", "파라미터"]                                 # 기본 쉘 설정
+SHELL ["/bin/sh", "-c"]
+SHELL ["cmd", "/S", "/C"]
+SHELL ["/bin/bash", "-c"]
+
+
+ADD <호스트의 파일 경로> <Docker 이미지의 파일 경로>            # 파일 및 디렉토리 추가(다운로드, 압축해제도 가능)
+ADD ["<호스트의 파일 경로>" "<Docker 이미지의 파일 경로>"]
+ADD host.html /docker_dir/
+ADD hos* /docker_dir/
+ADD hos?.txt /docker_dir/
+.dockerignore 파일 만들고 그안에 제외하고싶은 파일명 기술하면 제외됨
+
+COPY <호스트의 파일 경로> <Docker 이미지의 파일 경로>           # 파일 복사
+COPY ["<호스트의 파일 경로>" "<Docker 이미지의 파일 경로>"]
+
+VOLUME ["/마운트 포인트"]                                       # 볼륨 마운트
+
+
 
 
 
