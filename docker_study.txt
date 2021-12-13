@@ -238,6 +238,16 @@ VOLUME ["/마운트 포인트"]                                       # 볼륨 �
 
 
 
+# 여러 컨테이너의 운용 관리
+docker compose up                                               # 정의된 Compose 파일 실행(샘플)
+docker compose ps                                               # compose컨테이너 확인
+docker compose stop                                             # compose컨테이너 정지
+docker compose down                                             # compose컨테이너 리소스 삭제
+
+
+
+
+
 
 
 
