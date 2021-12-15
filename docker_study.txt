@@ -239,11 +239,89 @@ VOLUME ["/마운트 포인트"]                                       # 볼륨 �
 
 
 # 여러 컨테이너의 운용 관리
-docker compose up                                               # 정의된 Compose 파일 실행(샘플)
+docker compose up                                               # 정의된 Compose 파일 실행(해당 디렉토리)
 docker compose ps                                               # compose컨테이너 확인
 docker compose stop                                             # compose컨테이너 정지
 docker compose down                                             # compose컨테이너 리소스 삭제
 
+
+version: '3.3'                                                  # .yaml compose 버전지정
+service:                                                        # .yaml 서비스 정의
+  webserver:                                                    # .yaml 생성할 이미지 이름
+    image: ubuntu                                               # .yaml 베이스 이미지 지정
+    image: heaven/dockersample:1.0                              # .yaml if 태그를 지정한 경우
+
+    build: .                                                    # .yaml if 이미지를 현재 디렉토리 Dockerfile로 빌드
+
+    build:
+      context: /data
+      dockerfile: Dockerfile-alternate                          # .yaml 임의의 이름으로된 Dockerfile 빌드
+
+      args:                                                     # .yaml 빌드시의 인수 지정
+        projectno:1
+        users: asa
+
+    command: /bin/bash                                          # .yaml 컨테이너 안에서 작동하는 명령
+
+    entrypoint:                                                 # .yaml 컨테이너 실행시 명령 지정
+      - php
+      - -d
+      - memory_limit = -1
+
+  links:                                                        # .yaml 컨테이너 간 연결
+    - logserver
+    - logserver:log01                                           # 서비스명:알리아스명
+
+  ports:                                                        # 공개 포트 지정
+    - "3000"
+    - "8000:8000"
+    - "49100:22"
+    - "127.0.0.1:8001:8001"
+
+  expose:                                                       # 컨테이너 내부에만 공개포트 지정
+    - "3000"
+    - "8000"
+
+    depends_on:                                                 # 의존관계지정(실행순서만)
+      - db
+      - redis
+      
+  environment:                                                  # 배열형식으로 환경변수 지정
+    - HOGE=fuga
+    - FOO
+
+  environment:                                                  # 해시형식으로 환경변수 지정
+    HOGE: fuga
+    FOO
+
+  env_file: envfile                                             # 환경변수 파일 읽어들이기
+
+  env_file:                                                     # 여러 환경변수 파일 읽어들이기
+    - ./envfile1
+    - ./app/envfile2
+    - ./tmp/envfile3
+
+  container_name: web-container                                 # 컨테이너명 지정
+
+  labels:                                                       # 배열형식으로 컨테이너 라벨 지정
+    - "com.example.description=Accounting webapp"
+    - "com.example.department=Finance"
+
+  labels:                                                       # 해시형식으로 컨테이너 라벨 지정
+    com.example.description: "Accounting webapp"
+    com.example.department: "Finance"
+
+docker compose config                                           # 설정한 라벨 확인
+
+  volumes:                                                      # 컨테이너에 볼륨 마운트
+    - /var/lib/mysql
+    - cache/:/tmp/cache                                         # 호스트 디렉토리:컨테이너 디렉토리
+
+  volumes:                                                      # 읽기전용으로 마운트
+    - ~configs/:/etc/configs/:ro
+
+  volumes_from:                                                 # 다른 컨테이너(log)로부터 모든 볼륨 마운트
+    - log
 
 
 
