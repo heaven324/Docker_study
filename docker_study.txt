@@ -41,8 +41,10 @@ docker image pull [옵션] 이미지명:[태그명]                      # 이�
 docker image pull -a centos
 
 docker image ls [옵션] [리포지토리 명]                          # 이미지 목록 표시
-docker image ls
-docker image ls --digests
+                -all, -a    = 모든 이미지를 표시
+                --digests   = 다이제스트를 표시할지 말지
+                --no-trunc  = 결과를 모두 표시
+                --quiet, -q = Docker 이미지 ID만 표시
 
 docker image inspect 이미지명:[태그명]                          # 이미지 상세정보 표시
 
@@ -52,13 +54,40 @@ docker search [옵션] <검색키워드>                               # 이미�
 docker search ubuntu
 
 docker image rm [옵션] 이미지명 [이미지명]                      # 이미지 삭제
+                --force, -f = 이미지를 강제로 삭제
+                --no-prune  = 중간 이미지를 삭제하지 않음
 docker image rm 82f 9f1 368 f1a 5bf
 
 docker image prune [옵션]                                       # 사용하지 않는 이미지 삭제
+                    --all, -a   = 사용하지 않는 이미지를 모두 삭제
+                    --force, -f = 이미지를 강제로 삭제
 docker image prune -a                                           # 사용하지 않는 이미지 모두 삭제
 
 
 docker container run [옵션] 이미지명:[태그명] [인수]            # 컨테이너 생성 및 시작
+                        --attach, -a        = 표준입력, 표준출력, 표준오류출력에 어태치
+                        --cidfile           = 컨테이너 ID를 파일로 출력
+                        --detach, -d        = 컨테이너를 생성하고 백그라운드에서 실행
+                        --interactive, -i   = 컨테이너의 표준 입력을 연다
+                        --tty, -t           = 단말기 디바이스를 사용한다
+                        --user, -u          = 사용자명을 지정
+                        --restart           = 명령의 실행 결과에 따라 재시작
+                        --rm                = 명령 실행 완료 후에 컨테이너를 자동으로 삭제
+                        --add-host=[]       = 컨테이너의 /etc/hosts에 호스트명과 IP주소 정의
+                        --dns=[]            = 컨테이너용 DNS서버의 IP주소 지정
+                        --expose            = 지정한 범위의 포트 번호를 할당
+                        --mac-address=[]    = 컨테이너의 MAC 주소를 지정
+                        --net=[]            = 컨테이너의 네트워크를 지정
+                        --hostname, -h      = 컨테이너 자신의 호스트명을 지정
+                        --publish, -p       = 호스트와 컨테이너의 포트 매핑
+                        --publish-all, -P   = 호스트의 임의의 포트를 컨테이너에 할당
+                        --cpu-shares, -c    = CPU의 사용 배분(비율)
+                        --memory, -m        = 사용할 메모리를 제한하여 실행
+                        --volume=[]         = 호스트와 컨테이너의 디렉토리를 공유
+                        --env=[], -e        = 환경변수를 설정
+                        --env-file=[]       = 환경변수를 파일로부터 설정
+                        --read-only=[]      = 컨테이너의 파일 시스템을 읽기전용으로 만듦
+                        --workdir=[], -w    = 컨테이너의 작업 디렉토리를 지정
 docker container run -it --name "test1" centos /bin/cal
 docker container run -it --name "test2" centos /bin/bash
 docker container run -d centos /bin/ping localhost              # 컨테이너 백그라운드 실행
@@ -79,6 +108,14 @@ docker container run -it --env-file=env_list centos /bin/bash   # 환경변수 �
 docker container run -it -w=/tensorflow centos /bin/bash        # 작업 디렉토리 설정
 
 docker container ls [옵션]                                      # 가동 컨테이너 목록 표시
+                    --all, -a       = 실행 중/정지 중인 것도 포함하여 모든 컨테이너를 표시
+                    --filter, -f    = 표시할 컨테이너의 필터링
+                    --format        = 표시 포맷을 지정
+                    --last, -n      = 마지막으로 실행된 n건의 컨테이너만 표시
+                    --latest, -i    = 마지막으로 실행된 컨테이너만 표시
+                    --no-trunc      = 정보를 생략하지 않고 표시
+                    --quiet, -q     = 컨테이너의 ID만 표시
+                    --size, -s      = 파일 크기 표시
 
 docker container status [컨테이너 식별자]                       # 컨테이너 가동 확인
 docker container status webserver
@@ -86,12 +123,18 @@ docker container top webserver                                  # 프로세스 �
 ctrl + c                                                        # 명령 종료
 
 docker container start [옵션] <컨테이너 식별자> [컨테이너 식별자] # 정지 컨테이너 시작
+                        --attach, -a        = 표준 출력, 표준 오류 출력을 연다
+                        --interactive, -i   = 컨테이너의 표준 입력을 연다
 
 docker container stop [옵션] <컨테이너 식별자> [컨테이너 식별자] # 컨테이너 정지
+                        --time, -t  = 컨테이너의 정지 시간을 지정(기본값은 10초)
 
 docker container restart [옵션] <컨테이너 식별자> [컨테이너 식별자] # 컨테이너 재시작
+                            --time, -t  = 컨테이너의 재시작 시간을 지정(기본값은 10초)
 
 docker container rm [옵션] <컨테이너 식별자> [컨테이너 식별자]  # 컨테이너 삭제
+                    --force, -f     = 실행 중인 컨테이너를 강제로 삭제
+                    --volumes, -v   = 할당한 볼륨을 삭제
 docker container prune                                          # 정지중인 모든 컨테이너 삭제
 
 docker container pause <컨테이너 식별자>                        # 작동중인 컨테이너의 프로세스 중단
@@ -99,12 +142,24 @@ docker container unpause webserver                              # 재개
 
 
 docker network ls [옵션]                                        # 네트워크 목록 표시(기본 컨테이너 시작:bridge)
+                    -f, --filter=[] = 출력을 필터링
+                    --no-trunc      = 상세 정보를 출력
+                    -q, --quiet     = 네트워크 ID만 표시
 
 docker network create [옵션] 네트워크                           # 네트워크 작성
+                        --driver, -d    = 네트워크 브리지 또는 오버레이
+                        --ip-range      = 컨테이너에 할당하는 IP주소의 범위를 지정
+                        --subnet        = 서브넷을 CIDR 형식으로 지정
+                        --ipv6          = ipv6 네트워크를 유효화할지 말지
+                        -label          = 네트워크에 설정하는 라벨
 docker network create --driver=bridge web-network               # 브리지 네트워크 작성
 docker network ls --filter driver=bridge                        # 작성한 네트워크 확인
 
 docker network connect [옵션] 네트워크 컨테이너                 # 네트워크 연결
+                        --ip        = IPv4 주소
+                        --ip6       = IPv6 주소
+                        --alias     = 앨리어스명
+                        --link      = 다른 컨테이너에 대한 링크
 docker network connect web-network sample                       # 지정 네트워크 연결
 docker container run -itd --name=webap --net=web-network nginx  # 컨테이너 시작시 네트워크 지정
 docker network disconnect web-network sample                    # 네트워크 연결 해제
@@ -119,6 +174,10 @@ docker container attach sample                                  # 가동 컨테�
 ctrl + c        ctrl + p, q                                     # 컨테이너 종료, 컨테이너 분리
 
 docker container exec [옵션] <컨테이너 식별자> <실행 명령> [인수] # 가동 컨테이너에서 프로세스 실행
+                        --detach, -d        = 명령을 백그라운드에서 실행
+                        --interactive, -i   = 컨테이너의 표준 입력을 연다
+                        --tty, -t           = tty를 사용
+                        --user, -u          = 사용자명을 지정
 docker container exec sample /bin/bash
 docker container exec -it sample /bin/echo "Hello"
 
@@ -139,6 +198,10 @@ docker container diff test
 
 
 docker container commit [옵션] <컨테이너 식별자> [이미지명[:태그명]] # 컨테이너로부터 이미지 작성
+                        --author, -a    = 작성자를 지정
+                        --message, -m   = 메시지를 지정
+                        --change, -c    = 커밋시 Dockerfile 명령을 지정
+                        --pause, -p     = 컨테이너를 일시 정지하고 커밋
 docker container commit -a "heaven" test heaven/testtest:1.0
 docker image inspect heaven/testtest:1.0
 
@@ -156,6 +219,8 @@ docker image load [옵션]                                        # 이미지 �
 docker image load -i test.tar
 
 docker system prune [옵션]                                      # 불필요한 이미지/컨테이너 일괄 삭제
+                    --all, -a   = 사용하지 않는 리소스를 모두 삭제
+                    --force, -f = 강제적으로 삭제
 
 
 
@@ -195,6 +260,9 @@ ONBUILD [실행하고 싶은 명령]                                    # 빌드
 STOPSIGNAL [시그널]                                             # 시스템 콜 시그널
 
 HEALTHCHECK [옵션] CMD 실행할 명령                              # 컨테이너의 헬스 체크 명령
+            --interval=n    = 헬스 체크 간격
+            --timeout=n     = 헬스 체크 타임아웃
+            --retries=N     = 타임아웃 횟수
 
 
 ENV [key] [value]                                               # 환경변수 설정
@@ -239,7 +307,13 @@ VOLUME ["/마운트 포인트"]                                       # 볼륨 �
 
 
 # 여러 컨테이너의 운용 관리
-docker compose up                                               # 정의된 Compose 파일 실행(해당 디렉토리)
+docker compose up [옵션] [서비스명 .]                           # 정의된 Compose 파일 실행(해당 디렉토리)
+                    -d                          = 백그라운드에서 실행
+                    --no-deps                   = 링크 서비스를 시작하지 않음
+                    --build                     = 이미지를 빌드
+                    --no-build                  = 이미지를 빌드하지 않음
+                    -t, -timeout                = 컨테이너의 타임아웃을 초로 지정(기본 10초)
+                    --scale SERVICE=서비스 수   = 서비스 수를 지정
 docker compose ps                                               # compose컨테이너 확인
 docker compose stop                                             # compose컨테이너 정지
 docker compose down                                             # compose컨테이너 리소스 삭제
@@ -322,6 +396,76 @@ docker compose config                                           # 설정한 라�
 
   volumes_from:                                                 # 다른 컨테이너(log)로부터 모든 볼륨 마운트
     - log
+
+
+docker-compose --version                                        # Docker compose 버전 확인
+
+docker-compose -f ./sample/docker-compose.yml up                # 파일경로 지정하여 시작
+
+docker-compose stop webserver                                   # 특정 컨테이너 조작
+
+docker-compose up --scale server_a=10 --scale server_b=20
+
+docker-compose ps                                               # 컨테이너 상태 확인
+docker-compose ps -q                                            # 컨테이너 id 확인
+
+docker-compose logs                                             # 컨테이너 로그 확인
+
+docker-compose run server_a /bin/bash                           # 컨테이너에서 명령실행
+
+docker-compose start                                            # 컨테이너 일괄 시작
+docker-compose stop                                             # 컨테이너 일괄 정지
+docker-compose restart                                          # 컨테이너 일괄 재시작
+docker-compose restart server_a                                 # 특정 컨테이너만 조작
+docker-compose pause                                            # 컨테이너 일괄 일시정지
+docker-compose unpause                                          # 컨테이너 일괄 재개
+
+docker-compose port [옵션] <서비스명> <프라이빗 포트번호>       # 공개용 포트 확인
+                    --protocol=proto    = 프로토콜, tcp 또는 udp
+                    --index=index       = 컨테이너의 인덱스 수
+docker-compose port webserver 80
+
+docker-compose config                                           # compose 구성파일 내용 확인
+
+docker-compose kill -s SIGINT                                   # 컨테이너에 SIGINT 송신(SIGKILL은 강제종료)
+    리눅스 시그널 종류 :    SIGUP   = 프로그램 재시작
+                            SIGINT  = 키보드로 인터럽트
+                            SIGQUIT = 키보드에 의한 중지
+                            SIGTERM = 프로그램 정상종료
+                            SIGKILL = 프로그램 강제종료
+                            SIGSTOP = 프로그램 일시정지
+
+docker-compose rm                                               # 컨테이너 일괄 삭제
+
+docker-compose down [옵션]                                      # 여러 리소스의 일괄 삭제
+                    --rmi all       = 모든 이미지를 삭제
+                    --rmi local     = 커스텀 태그가 없는 이미지만 삭제
+                    -v, --volumes   = Compose 정의 파일의 데이터 볼륨을 삭제
+docker-compose down -rmi all                                    # 모든 이미지를 삭제
+
+
+
+
+docker-machine --version                                        # Docker machine 버전 확인
+                create      = 실행 환경 작성
+                ls          = 실행 환경 목록 표시
+                status      = 실행 환경 상테 표시
+                url         = 실행 환경 URL 표시
+                ssh         = 실행 환경에 대한 SSH 연결
+                start       = 실행 환경 시작
+                stop        = 실행 환경 정지
+                restart     = 실행 환경 재시작
+                scp         = 실행 환경에서 파일 다운로드
+                rm          = 실행 환경에서 삭제
+                kill        = 실행 환경 강제정지
+                ip          = 실행 환경 IP주소 확인
+                inspect     = 실행 환경 정보 확인
+
+docker-machine create --driver <드라이버명> <작성할 Docker 머신명> # create 명령
+
+docker-machine ls [옵션]                                        # 실행환경 목록 표시
+                --quiet, -q = 머신명만 표시
+                --filter    = 표시할 머신을 필터링
 
 
 
